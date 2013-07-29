@@ -49,10 +49,20 @@ if ERRORLEVEL 1 goto :Scan_FS
 cls
 echo Scanning . . .
 echo.
-dir /al /s "%CD:~0,3%" > "%USERPROFILE%\Desktop\Symbolic Links.txt"
-echo Log: "%USERPROFILE%\Desktop\Symbolic Links.txt"
+
+
+set SL_TXT=Symbolic Links.txt
+Set i=0
+:Next_Name
+	if not exist "%USERPROFILE%\Desktop\%SL_TXT%" (goto :Start_Scanning)
+	set /A i+=1
+	set SL_TXT=Symbolic Links (%i%).txt
+	goto :Next_Name
+:Start_Scanning
+dir /al /s "%CD:~0,3%" > "%USERPROFILE%\Desktop\%SL_TXT%"
+echo Log: "%USERPROFILE%\Desktop\%SL_TXT%"
 echo.
-start /i %windir%\system32\notepad.exe "%USERPROFILE%\Desktop\Symbolic Links.txt"
+start /i %windir%\system32\notepad.exe "%USERPROFILE%\Desktop\%SL_TXT%"
 echo %RETURN%
 pause > nul
 goto :Start
