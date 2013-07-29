@@ -1,14 +1,9 @@
-# http://www.tutorialspoint.com/python/python_command_line_arguments.htm
 import sys
 import os
 
 source = sys.argv[1]
 dest = sys.argv[2]
 file_list = sys.argv[3]
-
-print "Source: " + source
-print "Destination: " + dest
-print "File List: " + file_list
 
 file_list_head = os.path.dirname(file_list)
 SH = os.path.dirname(source)

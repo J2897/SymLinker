@@ -1,3 +1,5 @@
+:: Released under the GNU General Public License version 3 by J2897.
+
 @echo OFF
 pushd "%~dp0"
 title SymLinker
