@@ -49,8 +49,6 @@ if ERRORLEVEL 1 goto :Scan_FS
 cls
 echo Scanning . . .
 echo.
-
-
 set SL_TXT=Symbolic Links.txt
 Set i=0
 :Next_Name
