@@ -55,7 +55,8 @@ echo.
 if %FIRST_TIME% == 1 (echo * = Default.)
 echo.
 
-if %FIRST_TIME% == 1 (choice /C:1234 /T 20 /D 1 /M "Which number"
+if %FIRST_TIME% == 1 (
+	choice /C:1234 /T 20 /D 1 /M "Which number"
 	if ERRORLEVEL 4 goto :End
 	if ERRORLEVEL 3 goto :Create_Hard_Links
 	if ERRORLEVEL 2 goto :Create_Soft_Links
@@ -130,11 +131,11 @@ REM Check user input...
 
 	REM If nothing was entered, try again.
 	if not defined SOURCE (set SOURCE=) && (goto :Source_Input)
-	
-	REM make sure that the second and third digits are ":\".
+
+	REM make sure that the second and third charactors are ':\'.
 	if %SOURCE:~1,2% NEQ :\ (set SOURCE=) && (goto :Source_Input)
-	
-	REM Is there a trailing slash? if so, remove it.
+
+	REM Is there a trailing slash? If so, remove it.
 	if %SOURCE:~-1%==\ (set SOURCE=%SOURCE:~0,-1%)
 
 REM Make sure the folder exists.
@@ -171,10 +172,10 @@ REM Check user input...
 	REM Default destination.
 	if not defined DESTINATION (set DESTINATION=%CD:~0,3%Symlinks)
 
-	REM make sure that the second and third digits are ":\".
+	REM make sure that the second and third charactors are ':\'.
 	if %DESTINATION:~1,2% NEQ :\ (set DESTINATION=) && (goto :Destination_Input)
 
-	REM Is there a trailing slash? if so, remove it.
+	REM Is there a trailing slash? If so, remove it.
 	if %DESTINATION:~-1%==\ (set DESTINATION=%DESTINATION:~0,-1%)
 
 REM Add double-quotes to the Destination variable.
