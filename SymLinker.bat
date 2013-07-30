@@ -29,38 +29,72 @@ if not exist %PYTHON% (
 
 set PROC_FOLDERS_PY="%CD%\proc_folders.py"
 set PROC_FILES_PY="%CD%\proc_files.py"
-set "RETURN=Press any key to return to the menu . . ."
+set RETURN=Press any key to return to the menu . . .
 
 :Start
+set SLL_TXT=Symbolic Links.txt
+set SLL_PATH=%USERPROFILE%\Documents
+
+REM Check for 'Symbolic Links.txt' file.
+if exist "%SLL_PATH%\%SLL_TXT%" (set FIRST_TIME=0) else (set FIRST_TIME=1)
+
+REM Use the default star if appropriate...
+if %FIRST_TIME% == 1 (
+	set "S=*"
+) else (
+	set "S= "
+)
+
 cls
 echo.
-echo  1. Scan file-system for symbolic links.
-echo  2. Create 'soft' symbolic links.
-echo  3. Create 'hard' symbolic links.
-echo  4. Exit.
+echo %S% 1. Scan file-system for symbolic links.
+echo   2. Create 'soft' symbolic links.
+echo   3. Create 'hard' symbolic links.
+echo   4. Exit.
 echo.
-choice /C:1234 /T 300 /D 4 /M "Which number"
-if ERRORLEVEL 4 goto :End
-if ERRORLEVEL 3 goto :Create_Hard_Links
-if ERRORLEVEL 2 goto :Create_Soft_Links
-if ERRORLEVEL 1 goto :Scan_FS
+if %FIRST_TIME% == 1 (echo * = Default.)
+echo.
+
+if %FIRST_TIME% == 1 (choice /C:1234 /T 20 /D 1 /M "Which number"
+	if ERRORLEVEL 4 goto :End
+	if ERRORLEVEL 3 goto :Create_Hard_Links
+	if ERRORLEVEL 2 goto :Create_Soft_Links
+	if ERRORLEVEL 1 goto :Scan_FS
+) else (
+	choice /C:1234 /T 300 /D 4 /M "Which number"
+	if ERRORLEVEL 4 goto :End
+	if ERRORLEVEL 3 goto :Create_Hard_Links
+	if ERRORLEVEL 2 goto :Create_Soft_Links
+	if ERRORLEVEL 1 goto :Scan_FS
+)
 
 :Scan_FS
 cls
 echo Scanning . . .
 echo.
-set SL_TXT=Symbolic Links.txt
-Set i=0
-:Next_Name
-	if not exist "%USERPROFILE%\Desktop\%SL_TXT%" (goto :Start_Scanning)
-	set /A i+=1
-	set SL_TXT=Symbolic Links (%i%).txt
+set i=0
+
+	:Next_Name
+	if not exist "%SLL_PATH%\%SLL_TXT%" (goto :Start_Scanning)
+	set /a i+=1
+	set SLL_TXT=Symbolic Links (%i%).txt
 	goto :Next_Name
+
 :Start_Scanning
-dir /al /s "%CD:~0,3%" > "%USERPROFILE%\Desktop\%SL_TXT%"
-echo Log: "%USERPROFILE%\Desktop\%SL_TXT%"
+dir /al /s "%CD:~0,3%" > "%SLL_PATH%\%SLL_TXT%"
+echo Log: "%SLL_PATH%\%SLL_TXT%"
 echo.
-start /i %windir%\system32\notepad.exe "%USERPROFILE%\Desktop\%SL_TXT%"
+start /i %windir%\system32\notepad.exe "%SLL_PATH%\%SLL_TXT%"
+
+if %i% == 0 (
+	echo NOTE: No previous 'Symbolic Links.txt' file was found.
+	echo.
+	echo If this is the first time you have scanned your file-system for symbolic links,
+	echo please back-up the 'Symbolic Links.txt' file. You may want it in the future for
+	echo comparision after generating lots of your own symbolic links.
+	echo.
+)
+
 echo %RETURN%
 pause > nul
 goto :Start
