@@ -5,7 +5,7 @@ pushd "%~dp0"
 title SymLinker
 
 ver | find "Version 6." > nul
-if %ERRORLEVEL% == 0 (
+if %ERRORLEVEL%==0 (
 	REM Do OPENFILES to check for administrative privileges
 	openfiles > nul
 	if errorlevel 1 (
@@ -38,8 +38,8 @@ set SLL_PATH=%USERPROFILE%\Documents
 REM Check for 'Symbolic Links.txt' file.
 if exist "%SLL_PATH%\%SLL_TXT%" (set FIRST_TIME=0) else (set FIRST_TIME=1)
 
-REM Use the default star if appropriate...
-if %FIRST_TIME% == 1 (
+REM Use the default star if appropriate.
+if %FIRST_TIME%==1 (
 	set "S=*"
 ) else (
 	set "S= "
@@ -52,10 +52,10 @@ echo   2. Create 'soft' symbolic links.
 echo   3. Create 'hard' symbolic links.
 echo   4. Exit.
 echo.
-if %FIRST_TIME% == 1 (echo * = Default.)
+if %FIRST_TIME%==1 (echo * = Default.)
 echo.
 
-if %FIRST_TIME% == 1 (
+if %FIRST_TIME%==1 (
 	choice /C:1234 /T 20 /D 1 /M "Which number"
 	if ERRORLEVEL 4 goto :End
 	if ERRORLEVEL 3 goto :Create_Hard_Links
@@ -87,12 +87,11 @@ echo Log: "%SLL_PATH%\%SLL_TXT%"
 echo.
 start /i %windir%\system32\notepad.exe "%SLL_PATH%\%SLL_TXT%"
 
-if %i% == 0 (
-	echo NOTE: No previous 'Symbolic Links.txt' file was found.
-	echo.
-	echo If this is the first time you have scanned your file-system for symbolic links,
-	echo please back-up the 'Symbolic Links.txt' file. You may want it in the future for
-	echo comparision after generating lots of your own symbolic links.
+if %i%==0 (
+	echo NOTE: No previous 'Symbolic Links.txt' file was found. If this is the first
+	echo time that you have scanned your file-system for symbolic links, please back-up
+	echo the 'Symbolic Links.txt' file. You may want it again in the future for
+	echo comparision after generating symbolic links.
 	echo.
 )
 
