@@ -14,18 +14,21 @@ if %ERRORLEVEL%==0 (
 		echo Right-click on this file and select 'Run as administrator'.
 		echo.
 		pause
-		exit /b 1
+		goto :End
 	)
 )
 
-color 1b
 set PYTHON=C:\Python27\python.exe
 
 if not exist %PYTHON% (
+	color cf
 	echo This program requires Python 2.7.* to be installed.
 	echo.
 	pause
-) && (goto :End)
+	goto :End
+)
+
+color 1b
 
 set PROC_FOLDERS_PY="%CD%\proc_folders.py"
 set PROC_FILES_PY="%CD%\proc_files.py"
@@ -130,8 +133,12 @@ REM Check user input...
 
 	REM If nothing was entered, try again.
 	if not defined SOURCE (set SOURCE=) && (goto :Source_Input)
+	
+	REM Remove any quotes (single or double).
+	set SOURCE=%SOURCE:"=%
+	set SOURCE=%SOURCE:'=%
 
-	REM make sure that the second and third charactors are ':\'.
+	REM make sure that the second and third characters are ':\'.
 	if %SOURCE:~1,2% NEQ :\ (set SOURCE=) && (goto :Source_Input)
 
 	REM Is there a trailing slash? If so, remove it.
@@ -171,7 +178,11 @@ REM Check user input...
 	REM Default destination.
 	if not defined DESTINATION (set DESTINATION=%CD:~0,3%Symlinks)
 
-	REM make sure that the second and third charactors are ':\'.
+	REM Remove any quotes (single or double).
+	set DESTINATION=%DESTINATION:"=%
+	set DESTINATION=%DESTINATION:'=%
+
+	REM make sure that the second and third characters are ':\'.
 	if %DESTINATION:~1,2% NEQ :\ (set DESTINATION=) && (goto :Destination_Input)
 
 	REM Is there a trailing slash? If so, remove it.
